@@ -1,7 +1,7 @@
 from matplotlib import pyplot as plt
 from sklearn.metrics import confusion_matrix
-import seaborn as sns
-import numpy as np 
+import seaborn as sns # type: ignore
+import numpy as np # type: ignore
 from modeling import evaluate_classification_model
 
 

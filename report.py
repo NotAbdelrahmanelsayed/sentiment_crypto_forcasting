@@ -1,9 +1,11 @@
-from reportlab.lib import colors
-from reportlab.platypus import Table, TableStyle
-from reportlab.platypus import Image
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Spacer, Paragraph
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors # type: ignore
+from reportlab.platypus import Table, TableStyle # type: ignore
+from reportlab.platypus import Image # type: ignore
+from reportlab.lib.pagesizes import letter # type: ignore
+from reportlab.platypus import SimpleDocTemplate, Spacer, Paragraph # type: ignore
+from reportlab.lib.styles import getSampleStyleSheet # type: ignore # type: ignore
+import matplotlib.pyplot as plt
+
 
 def create_metrics_figure(metrics, title, best_params=None):
     """Generate a matplotlib figure from metrics and optional best parameters."""
