@@ -7,10 +7,8 @@ import numpy as np # type: ignore
 def train_classification_model(X_train, y_train):
     model = XGBClassifier(
         tree_method='hist',
-        device='cuda',
-        predictor='gpu_predictor',
-        gpu_id=0,
-        use_label_encoder=False
+        device='cuda:0',
+        
     )
     model.fit(X_train, y_train)
     return model
@@ -39,10 +37,8 @@ def tune_classification_model(X_train, y_train):
     grid_search = GridSearchCV(
         XGBClassifier(
             tree_method='hist',
-            device='cuda',
-            predictor='gpu_predictor',
-            gpu_id=0,
-            use_label_encoder=False
+            device='cuda:0',
+            
         ),
         param_grid,
         cv=tscv,
@@ -56,9 +52,7 @@ def train_regression_model(X_train, y_train):
     model = XGBRegressor(
         objective='reg:squarederror',
         tree_method='hist',
-        device='cuda',  
-        predictor='gpu_predictor',
-        gpu_id=0
+        device='cuda:0',  
     )
     model.fit(X_train, y_train)
     return model
@@ -78,9 +72,7 @@ def tune_regression_model(X_train, y_train):
         XGBRegressor(
             objective='reg:squarederror',
             tree_method='hist',
-            device='cuda',
-            predictor='gpu_predictor',
-            gpu_id=0
+            device='cuda:0',
         ),
         param_grid,
         cv=tscv,
