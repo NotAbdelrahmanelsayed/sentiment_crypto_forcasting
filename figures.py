@@ -44,3 +44,15 @@ def visualize_feature_importance(model, feature_names, coin_name):
     plt.show()
 
     return fig
+
+def visualize_regression_model(y_test, y_pred, coin_name):
+  fig, ax = plt.subplots(figsize=(12, 6))
+  ax.scatter(y_test.index, y_pred, alpha=0.5, label='Predicted vs Actual', color='blue', edgecolor='w', s=80)
+  ax.plot(np.unique(y_test), np.poly1d(np.polyfit(y_test, y_pred, 1))(np.unique(y_test)), 'r--', label='Best Fit')
+  ax.set_xlabel('Actual Close Price')
+  ax.set_ylabel('Predicted Close Price')
+  ax.set_title(f'Regression Model Performance for {coin_name}')
+  ax.legend()
+  ax.grid(True)
+  plt.show()
+  return fig
