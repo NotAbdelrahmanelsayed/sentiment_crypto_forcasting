@@ -9,7 +9,8 @@ def train_classification_model(X_train, y_train):
         tree_method='gpu_hist',
         predictor='gpu_predictor',
         gpu_id=0,
-        use_label_encoder=False)
+        use_label_encoder=False
+    )
     model.fit(X_train, y_train)
     return model
 
@@ -31,9 +32,16 @@ def tune_classification_model(X_train, y_train):
         'subsample': [0.8, 1.0],
         'colsample_bytree': [0.8, 1.0]
     }
+    
     tscv = TimeSeriesSplit(n_splits=5)
+    
     grid_search = GridSearchCV(
-        XGBClassifier(),
+        XGBClassifier(
+            tree_method='gpu_hist',
+            predictor='gpu_predictor',
+            gpu_id=0,
+            use_label_encoder=False
+        ),
         param_grid,
         cv=tscv,
         scoring='accuracy'
@@ -41,12 +49,14 @@ def tune_classification_model(X_train, y_train):
     grid_search.fit(X_train, y_train)
     return grid_search.best_estimator_, grid_search.best_params_
 
+
 def train_regression_model(X_train, y_train):
-    model = XGBRegressor(objective='reg:squarederror',
+    model = XGBRegressor(
+        objective='reg:squarederror',
         tree_method='gpu_hist',  
         predictor='gpu_predictor',
         gpu_id=0
-)
+    )
     model.fit(X_train, y_train)
     return model
 
@@ -58,15 +68,23 @@ def tune_regression_model(X_train, y_train):
         'subsample': [0.8, 1.0],
         'colsample_bytree': [0.8, 1.0]
     }
+    
     tscv = TimeSeriesSplit(n_splits=5)
+    
     grid_search = GridSearchCV(
-        XGBRegressor(objective='reg:squarederror'),
+        XGBRegressor(
+            objective='reg:squarederror',
+            tree_method='gpu_hist',
+            predictor='gpu_predictor',
+            gpu_id=0
+        ),
         param_grid,
         cv=tscv,
         scoring='neg_mean_squared_error'
     )
     grid_search.fit(X_train, y_train)
     return grid_search.best_estimator_, grid_search.best_params_
+
 
 
 def evaluate_regression_model(model, X_test, y_test):
