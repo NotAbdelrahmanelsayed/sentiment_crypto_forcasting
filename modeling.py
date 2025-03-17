@@ -1,8 +1,9 @@
 from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, precision_score, recall_score, f1_score
 from sklearn.model_selection import GridSearchCV, TimeSeriesSplit
 from xgboost import XGBRegressor, XGBClassifier
-import numpy as np
+import numpy as np #type:ignore
 import xgboost as xgb
+import pandas as pd #type:ignore
 
 # Common GPU configuration for all models
 GPU_CONFIG = {
