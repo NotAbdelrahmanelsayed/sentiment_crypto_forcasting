@@ -76,7 +76,7 @@ def tune_regression_model(X_train, y_train):
     grid_search = GridSearchCV(
         XGBRegressor(**GPU_CONFIG, objective='reg:squarederror'),
         param_grid,
-        cv=TimeSeriesSplit(n_splits=5),
+        cv=TimeSeriesSplit(n_splits=5).split(X_train),
         scoring='neg_mean_squared_error'
     )
     grid_search.fit(X, y)
