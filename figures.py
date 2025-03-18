@@ -3,7 +3,8 @@ from sklearn.metrics import confusion_matrix
 import seaborn as sns # type: ignore
 import numpy as np # type: ignore
 from modeling import evaluate_classification_model
-
+import shap # type: ignore
+from statsmodels.graphics.tsaplots import plot_acf #type: ignore
 
 def visualize_classification_model(model, X_test, y_test, coin_name):
   y_pred = model.predict(X_test)
@@ -56,3 +57,34 @@ def visualize_regression_model(y_test, y_pred, coin_name):
   ax.grid(True)
   plt.show()
   return fig
+
+def visualize_residuals(y_true, y_pred, coin_name):
+    residuals = y_true - y_pred
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
+    
+    # Residuals vs Time
+    ax1.scatter(range(len(residuals)), residuals, alpha=0.5)
+    ax1.set_title(f'Residuals Over Time - {coin_name}')
+    ax1.set_xlabel('Time Index')
+    ax1.set_ylabel('Residuals')
+    
+    # ACF Plot
+    plot_acf(residuals, lags=40, ax=ax2)
+    ax2.set_title(f'Autocorrelation - {coin_name}')
+    
+    plt.tight_layout()
+    return fig
+
+
+def explain_model(model, X_train, feature_names, coin_name):
+    explainer = shap.TreeExplainer(model)
+    shap_values = explainer.shap_values(X_train)
+    
+    fig1 = plt.figure()
+    shap.summary_plot(shap_values, X_train, feature_names=feature_names, show=False)
+    plt.title(f'SHAP Summary - {coin_name}')
+    
+    fig2 = plt.figure()
+    shap.dependence_plot(0, shap_values, X_train, feature_names=feature_names, show=False)
+    
+    return fig1, fig2
