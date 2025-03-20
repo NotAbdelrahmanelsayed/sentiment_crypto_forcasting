@@ -82,9 +82,24 @@ def explain_model(model, X_train, feature_names, coin_name):
     
     fig1 = plt.figure()
     shap.summary_plot(shap_values, X_train, feature_names=feature_names, show=False)
-    plt.title(f'SHAP Summary - {coin_name}')
+    plt.title(f'{coin_name} Feature Impact (SHAP)')
     
-    fig2 = plt.figure()
-    shap.dependence_plot(0, shap_values, X_train, feature_names=feature_names, show=False)
+    return fig1
+
+
+def visualize_residual_analysis(y_true, y_pred, dates):
+    residuals = y_true - y_pred
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 8))
     
-    return fig1, fig2
+    # Residuals timeline
+    ax1.plot(dates, residuals, color='purple')
+    ax1.axhline(0, color='red', linestyle='--')
+    ax1.set_title('Residuals Over Time')
+    
+    # ACF plot
+    plot_acf(residuals, lags=40, ax=ax2)
+    ax2.set_title('Autocorrelation')
+    
+    plt.tight_layout()
+    return fig
+
